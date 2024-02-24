@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstring>
+#include <fstream>
 
 // https://www.geeksforgeeks.org/cpp-stl-heap/ - used for an idea of how to make and use heaps
 
@@ -12,10 +13,12 @@ int* remove_Heap(int*);
 int* check_adjust(int*, int);
 int* clear(int*);
 int getLast(int*);
-
-void print(int*, int);
+void print(int*, int, int);
 
 int main() {
+  srand(time(0));
+  int* tree = new int[201];
+  tree = clear(tree);
   int running = 0;
   char choice[80];
   char add_choice[80];
@@ -26,26 +29,40 @@ int main() {
       cout << "Do you want to Y: add yourself, or F: add from file" << endl;
       cin >> add_choice;
       if(strcmp(add_choice, "Y") == 0) {
-	//add yourself
+	int num;
+	cin >> num;
+	add_Heap(num, tree);
       }
       else if(strcmp(add_choice, "F") == 0) {
-	//add from file
+	ifstream file("nums.txt");
+	int num;
+	while (file >> num) {
+	  add_Heap(num, tree);
+	}
+	file.close();
       }
     }
     else if(strcmp(choice, "D") == 0) {
-      //delete num
+      remove_Heap(tree);
     }
     else if(strcmp(choice, "DA") == 0) {
-      //delete all
+      clear(tree);
     }
     else if(strcmp(choice, "P") == 0) {
-      //print
+      if(tree[1] == -1) {
+	cout << "Empty heap" << endl;
+      }
+      else {
+	cout << "Heap:" << endl;
+	print(tree, 1, 0);
+      }
     }
     else if(strcmp(choice, "Q") == 0) {
       running = 1;
     }
   }
-
+  delete[] tree;
+  return 0;
 }
 
 void print(int* tree, int index, int depth = 0) {
