@@ -34,9 +34,12 @@ int main() {
 	add_Heap(num, tree);
       }
       else if(strcmp(add_choice, "F") == 0) {
+	cout << "How many numbers do you want to add from file?" << endl;
+	int num_count;
+	cin >> num_count;
 	ifstream file("nums.txt");
 	int num;
-	while (file >> num) {
+	for(int i = 0; i < num_count && file >> num; ++i) {
 	  add_Heap(num, tree);
 	}
 	file.close();
